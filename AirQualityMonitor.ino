@@ -98,7 +98,8 @@ void loop()
   currentMillis = millis();
 
   // New values are read and displayed every 10 seconds.
-  if (currentMillis - previousMillis >= interval) {
+  // If the difference is negative, millis has rolled over back to 0.
+  if (currentMillis - previousMillis >= interval || currentMillis - previousMillis < 0) {
     readAirQuality();
     readTemp();
     setDailyMax();
