@@ -30,9 +30,11 @@ int humidity;
 
 unsigned long currentMillis;
 unsigned long previousMillis;
-const unsigned int interval = 1000;
+// This interval is the number of milliseconds per reading.
+const unsigned int interval = 5000;
 const unsigned int intervalsIn24Hours = millisecondsPerDay / interval;
 int buttonState;
+bool buttonReleased;
 
 // The daily max array stores 5 of the highest co2 values throughout the day.
 int dailyMax[5];
@@ -154,7 +156,7 @@ void operateButton()
   // Read button state.
   buttonState = digitalRead(buttonPin);
 
-  if (buttonState == LOW) {
+  if (buttonReleased == true && buttonState == LOW) {
 
     // Scroll through oled states.
     if (oledState < 3) {
@@ -166,8 +168,11 @@ void operateButton()
     // Immediately display new page on button press.
     displayInfo();
 
-    delay(1000);
+    buttonReleased = false;
 
+  } else if (buttonReleased == false && buttonState == HIGH) {
+    // Button released is necessary so that the pages don't cycle rapidly upon holding the button.
+    buttonReleased = true;
   }
 
 }
