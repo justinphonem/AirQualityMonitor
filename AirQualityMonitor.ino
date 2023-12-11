@@ -108,8 +108,6 @@ void loop()
     setDailyMax();
     displayInfo();
 
-    Serial.println(airQualitySensorValue);
-
     previousMillis = currentMillis;
   }
 
