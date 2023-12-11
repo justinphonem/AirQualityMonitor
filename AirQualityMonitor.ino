@@ -21,6 +21,7 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
 #define millisecondsPerDay 86400000
 
+
 int airQualitySensorValue;
 int estimatedCO2;
 char* quality;
@@ -45,6 +46,7 @@ int oledState;
 // 1 --> hum page (temp and humidity)
 // 2 --> co2 page (air quality and co2)
 // 3 --> daily max page (air quality and daily max co2)
+
 
 void setup()
 {
@@ -106,6 +108,8 @@ void loop()
     setDailyMax();
     displayInfo();
 
+    Serial.println(airQualitySensorValue);
+
     previousMillis = currentMillis;
   }
 
@@ -117,7 +121,7 @@ void readAirQuality()
   // Read gas sensor pin and determine estimated CO2 ppm.
   // CO2 formula was calibrated in 'controlled' environment.
   airQualitySensorValue = analogRead(airQualityPin);
-  estimatedCO2 = (int)((float)airQualitySensorValue * 4.68545 + 251.63835);
+  estimatedCO2 = (int)((float)airQualitySensorValue * 4.6129 + 309.6775);
   
   // Set quality based on healthy levels.
   if (estimatedCO2 < 750) {
