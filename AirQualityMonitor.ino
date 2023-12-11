@@ -34,7 +34,6 @@ unsigned long previousMillis;
 const unsigned int interval = 5000;
 const unsigned int intervalsIn24Hours = millisecondsPerDay / interval;
 int buttonState;
-bool buttonReleased;
 
 // The daily max array stores 5 of the highest co2 values throughout the day.
 int dailyMax[5];
@@ -156,9 +155,9 @@ void operateButton()
   // Read button state.
   buttonState = digitalRead(buttonPin);
 
-  if (buttonReleased == true && buttonState == LOW) {
+  if (buttonState == LOW) {
 
-    // Scroll through oled states.
+    // Scroll to the next oled state.
     if (oledState < 3) {
       oledState++;
     } else {
@@ -167,12 +166,9 @@ void operateButton()
 
     // Immediately display new page on button press.
     displayInfo();
+    
+    delay(1000);
 
-    buttonReleased = false;
-
-  } else if (buttonReleased == false && buttonState == HIGH) {
-    // Button released is necessary so that the pages don't cycle rapidly upon holding the button.
-    buttonReleased = true;
   }
 
 }
